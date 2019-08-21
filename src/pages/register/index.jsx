@@ -1,15 +1,33 @@
 import React from 'react';
-import { InputItem, Button } from 'antd-mobile';
+import { InputItem, Toast } from 'antd-mobile';
 
 import './index.scss';
 
 import CountDown from '../../common/count_down';
 
-import {POST} from '../../utils/request';
+import Request from '../../utils/request';
 
 
 const phone_icon = require('../../assets/phone.png');
 const passwd_icon = require('../../assets/passwd.png');
+
+const get_search = () => {
+    let serarch_obj = {};
+    if (window.location.search !== '') {
+      const arr = window.location.search.substr(1).split('&');
+
+      arr.map((item) => {
+        let tem = item.split('=');
+        serarch_obj[tem[0]] = tem[1];
+      });
+    }
+    return serarch_obj;
+}
+
+const search = get_search();
+const agent = navigator.userAgent;
+const platform = agent.match(/mobile/i) ? (agent.match(/iphone/i) ? 'IOS' : 'Android') : 'PC';
+
 
 const MsgBtn = ({is_sending, on_end}) => {
     return (
@@ -39,8 +57,25 @@ class Register extends React.Component{
             is_sending: false
         }
 
+        this.form_data = {
+            phone: '',
+            smscode: '',
+            passwd: ''
+        }
+
         this.send_msg = this.send_msg.bind(this);
         this.toggle_sendBtn = this.toggle_sendBtn.bind(this);
+        this.init = this.init.bind(this);
+        this.confirm = this.confirm.bind(this);
+        this.set_data = this.set_data.bind(this);
+    }
+
+    init() {
+        this.form_data = {
+            phone: '',
+            smscode: '',
+            passwd: '',
+        }
     }
 
     send_msg() {
@@ -58,6 +93,31 @@ class Register extends React.Component{
         });
     }
 
+    confirm() {
+        const {POST} = Request;
+        POST('/tokenclass/t1/v1/reserve/setuserreservequit', {
+            channel: 1,
+            ver:'0.0.1',
+            platform,
+            zone: 'CN',
+            countrycode: '86',
+            invitation: search.invitecode,
+            ...this.form_data            
+        }).then((res) => {
+            console.log('注册', res);
+            if(res.code == 0) {
+                Toast.info('注册成功');
+                this.init();
+            } else {
+                Toast.info('注册失败');
+            }
+        });
+    }
+
+    set_data(key, data) {
+        this.form_data[key] = data;
+    }
+
     render() {
         const {is_sending} = this.state;
         return (
@@ -70,6 +130,7 @@ class Register extends React.Component{
                                 placeholder="请输入手机号码"
                                 type="phone"
                                 labelNumber={3}
+                                onChange={(val) => {this.set_data('phone', val.replace(/\s+/g,""))}}
                             >
                                 <img src={phone_icon} className="input_icon"/>
                             </InputItem>
@@ -82,6 +143,7 @@ class Register extends React.Component{
                                 labelNumber={3}
                                 extra={<MsgBtn is_sending={is_sending} on_end={this.toggle_sendBtn}/>}
                                 onExtraClick={this.send_msg}
+                                onChange={(val) => {this.set_data('smscode', val)}}
                             >
                                 <img src={passwd_icon} className="input_icon"/>
                             </InputItem>
@@ -92,12 +154,13 @@ class Register extends React.Component{
                                 type="number"
                                 maxLength={11}
                                 labelNumber={3}
+                                onChange={(val) => {this.set_data('passwd', val)}}
                             >
                                 <img src={passwd_icon} className="input_icon"/>
                             </InputItem>
                         </li>
                     </ul>
-                    <div className="confirm_btn">
+                    <div className="confirm_btn" onClick={this.confirm}>
                         立即注册
                     </div>
                     <div className="law">
