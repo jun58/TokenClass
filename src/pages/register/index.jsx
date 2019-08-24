@@ -49,12 +49,28 @@ const MsgBtn = ({is_sending, on_end}) => {
         </div>
     )
 }
+/**
+ * 检测密码是否符合
+ * @param passwd 密码
+ */
+function test_passwd(passwd) {
+    const rep = new RegExp(/[\u4E00-\u9FA5]/);
+    if (rep.test(passwd)) {
+        return '密码格式错误';
+    } else if (passwd.length < 6) {
+        return '密码最少6位';
+    }
 
+    return '';
+}
+
+const {POST} = Request;
 class Register extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            is_sending: false
+            is_sending: false,
+            password: ''
         }
 
         this.form_data = {
@@ -80,10 +96,26 @@ class Register extends React.Component{
 
     send_msg() {
         const {is_sending} = this.state;
+        const rel_phone = this.form_data.phone.replace(/' '/g, '');
         if (is_sending) {
             return;
         }
+        if (rel_phone.length < 11) {
+            return Toast.info('请输入正确的手机号');
+        }
         this.toggle_sendBtn();
+
+        POST('/tokenclass/user/v1/sms/send', {
+            countrycode: '86',
+            phone: rel_phone,
+            businesstype: 1000,         
+        }).then((res) => {
+            if(res.code == 0) {
+                Toast.info('发送成功');
+            } else {
+                Toast.info('发送失败，请稍后重试');
+            }
+        });
 
     }
 
@@ -94,15 +126,27 @@ class Register extends React.Component{
     }
 
     confirm() {
-        const {POST} = Request;
-        POST('/tokenclass/t1/v1/reserve/setuserreservequit', {
+        const {phone, smscode} = this.form_data;
+        const {password} = this.state;
+        
+        if (!phone || !smscode || !password) {
+            return Toast.info('有未完成项');
+        }
+
+        const tips = test_passwd(password);
+        if (tips) {
+            return Toast.info(tips);
+        }
+
+        POST('/tokenclass/user/v1/register', {
             channel: 1,
             ver:'0.0.1',
             platform,
             zone: 'CN',
             countrycode: '86',
             invitation: search.invitecode,
-            ...this.form_data            
+            ...this.form_data,
+            passwd: password            
         }).then((res) => {
             console.log('注册', res);
             if(res.code == 0) {
@@ -151,10 +195,13 @@ class Register extends React.Component{
                         <li>
                             <InputItem
                                 placeholder="请输入密码"
-                                type="number"
+                                type="password"
+                                value={this.state.password}
                                 maxLength={11}
                                 labelNumber={3}
-                                onChange={(val) => {this.set_data('passwd', val)}}
+                                onChange={(val) => {this.setState({
+                                    password: val.replace(/\s/g, '')
+                                })}}
                             >
                                 <img src={passwd_icon} className="input_icon"/>
                             </InputItem>
