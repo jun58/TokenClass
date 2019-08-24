@@ -1,5 +1,6 @@
 {
   "name": "tokenclass-web",
+  "homepage" : "http://jun58.github.io/TokenClass",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

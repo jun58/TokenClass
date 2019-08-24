@@ -1,4 +1,5 @@
 const { override, fixBabelImports } = require('customize-cra');
+const paths = require('./config/paths');
 
 //  module.exports = override(
 //     fixBabelImports('import', {
@@ -6,15 +7,22 @@ const { override, fixBabelImports } = require('customize-cra');
 //         style: 'css',
 //     }),
 //  );
-const _config = override(
+// const _config = override(
+//     fixBabelImports('import', {
+//         libraryName: 'antd-mobile',
+//         style: 'css',
+//     }),
+//  )
+// console.log(_config);
+const rewiredPath = () => config => {
+    config.output.path = config.mode === 'production' ? 'F:\\tokenclass-web\\docs' : undefined;
+    return config;
+};
+
+module.exports = override(
     fixBabelImports('import', {
         libraryName: 'antd-mobile',
         style: 'css',
     }),
- )
-console.log(_config);
-module.exports = function override(config, env) {
-   // do stuff with the webpack config...
-//    console.log(config);
-   return config;
-};
+    // rewiredPath()
+ );
