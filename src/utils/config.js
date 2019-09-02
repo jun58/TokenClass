@@ -1,3 +1,3 @@
 module.exports = {
-    server: 'http://test.tokenclass.com', // 测试 
+    server: 'https://test.tokenclass.com', // 测试 
 }
