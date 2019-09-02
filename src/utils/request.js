@@ -57,8 +57,7 @@ const POST = (url, data = {}, headers={}, is_formData = false) => {
     return FETCH(url, {
         method: 'POST',
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded",            
-            'mode': 'no-cors',
+            "Content-Type": "application/x-www-form-urlencoded",     
             ...headers
         },
         body: __formData
