@@ -1,4 +1,7 @@
 import { server } from './config';
+const md5 = require('md5');
+
+const md5_key =  ['passwd'];
 
 const throwError = json => {
     const error = new Error(json.code);
@@ -44,7 +47,7 @@ const FETCH = async (path, options) => {
 const encodeQuery = (data) => {
     console.log(data)
     const query = Object.keys(data)
-      .map(key => `${encodeURIComponent(key)}=${typeof data[key] == 'string' ? encodeURIComponent(data[key].replace(/\s+/g, '')) : encodeURIComponent(data[key])}`)
+      .map(key => `${encodeURIComponent(key)}=${typeof data[key] == 'string' ? (md5_key.indexOf(key) >= 0 ? encodeURIComponent(md5(data[key])) : encodeURIComponent(data[key].replace(/\s+/g, '')) ) : encodeURIComponent(data[key])}`)
       .join('&');
   
     return query;
