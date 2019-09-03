@@ -138,17 +138,28 @@ class Register extends React.Component{
             return Toast.info(tips);
         }
 
+        let fix = {...this.form_data};
+
+        if (search.invitecode) {
+            fix = {
+                ...fix,
+                invitation: search.invitecode
+            }
+        }
+
+        Toast.loading('loading...', 0);
         POST('/tokenclass/user/v1/register', {
             channel: 1,
+            type: 0,
             ver:'0.0.1',
             platform,
             zone: 'CN',
             countrycode: '86',
-            invitation: search.invitecode,
-            ...this.form_data,
+            ...fix,
             passwd: password            
         }).then((res) => {
             console.log('注册', res);
+            Toast.hide();
             if(res.code == 0) {
                 Toast.info('注册成功');
                 this.init();
