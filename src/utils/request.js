@@ -58,7 +58,6 @@ const POST = (url, data = {}, headers={}, is_formData = false) => {
         method: 'POST',
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            'Access-Control-Allow-Origin': '*', 
             ...headers
         },
         body: __formData
