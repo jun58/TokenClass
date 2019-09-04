@@ -147,6 +147,13 @@ class Register extends React.Component{
             }
         }
 
+        if (platform !== 'PC') {
+            fix = {
+                ...fix,
+                pushway: 0
+            }
+        }
+
         Toast.loading('loading...', 0);
         POST('/tokenclass/user/v1/register', {
             channel: 1,
