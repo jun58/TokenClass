@@ -143,7 +143,7 @@ class Register extends React.Component{
         if (search.invitecode) {
             fix = {
                 ...fix,
-                invitation: search.invitecode
+                invitationcode: search.invitecode
             }
         }
 
