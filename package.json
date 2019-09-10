@@ -64,7 +64,9 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "react-app-rewired test --env=jsdom"
+    "test": "react-app-rewired test --env=jsdom",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -134,6 +136,7 @@
   "devDependencies": {
     "babel-plugin-import": "^1.12.0",
     "customize-cra": "^0.5.0",
+    "gh-pages": "^2.1.1",
     "node-sass": "^4.12.0",
     "react-app-rewired": "^2.1.3"
   }
