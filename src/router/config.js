@@ -4,15 +4,15 @@ import OneDetail from '../pages/oneDetail';
 
 const route_config = [
     {
-        path: "/TokenClass/register",
+        path: "/register",
         component: Register
     },
     {
-        path: "/TokenClass/userAgreement",
+        path: "/userAgreement",
         component: UserAgreement
     },
     {
-        path: "/TokenClass/oneDetail",
+        path: "/oneDetail",
         component: OneDetail
     }
 ];

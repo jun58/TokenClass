@@ -6,7 +6,7 @@ import routes from './router/config';
 
 function App() {
   return (
-    <Router>
+    <Router basename="TokenClass">
     <Switch>
       {
         routes.map((route) => 
