@@ -12,7 +12,7 @@ function App() {
           <Route path={route.path} component={route.component} key={route.path}/>
         )
       }
-      <Redirect to="oneDetail"/>      
+      <Redirect to="/TokenClass/oneDetail"/>      
     </Switch>
   );
 }
