@@ -6,16 +6,16 @@ import routes from './router/config';
 
 function App() {
   return (
-    <HashRouter basename='/'>
+    <Router>
     <Switch>
       {
         routes.map((route) => 
           <Route path={route.path} component={route.component} key={route.path}/>
         )
       }
-      <Redirect to="/oneDetail"/>      
+      {/* <Redirect to="/oneDetail"/>       */}
     </Switch>
-    </HashRouter>
+    </Router>
   );
 }
 
