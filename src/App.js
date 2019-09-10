@@ -6,7 +6,7 @@ import routes from './router/config';
 
 function App() {
   return (
-    <Router basename="TokenClass">
+    <Router basename={process.env.PUBLIC_URL}>
     <Switch>
       {
         routes.map((route) => 
