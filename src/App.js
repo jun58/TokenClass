@@ -6,16 +6,13 @@ import routes from './router/config';
 
 function App() {
   return (
-    <Router basename={process.env.PUBLIC_URL}>
-    <Switch>
+    <div>
       {
         routes.map((route) => 
           <Route path={route.path} component={route.component} key={route.path}/>
         )
-      }
-      {/* <Redirect to="/oneDetail"/>       */}
-    </Switch>
-    </Router>
+      }        
+    </div>
   );
 }
 
