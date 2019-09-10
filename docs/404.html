@@ -15,7 +15,7 @@
     //   );
       l.replace(
         l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        `${process.env.PUBLIC_URL}`+ '/?p=/' +
+        '/TokenClass' + '/?p=/' +
         l.pathname.split('/').slice(-1).join('/')
       );
     </script>
