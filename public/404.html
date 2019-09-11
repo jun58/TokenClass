@@ -9,7 +9,8 @@
       l.replace(
         l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
         '/TokenClass' + '/?p=/' +
-        l.pathname.split('/').slice(-1).join('/')
+        l.pathname.split('/').slice(-1).join('/') +
+        (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '')
       );
     </script>
   </head>
